@@ -8,7 +8,8 @@ const Client = require('pg-native');
 
 // PG connection setup
 const connectionString = process.env.DATABASE_URL ||
-  `postgresql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=disable`;
+  // `postgresql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=disable`;
+`postgresql://labber:labber@localhost:5432/midterm?sslmode=disable`;
 const client = new Client();
 
 // Loads the schema files from db/schema
@@ -44,5 +45,3 @@ try {
   console.error(chalk.red(`Failed due to error: ${err}`));
   client.end();
 }
-
-
