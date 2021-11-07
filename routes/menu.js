@@ -10,10 +10,8 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    console.log("IT HIT HERE!!!")
     db.query(`SELECT * FROM public.dishes;`)
       .then((data) => {
-        console.log("THE TABLES ARE", data.rows)
         const dishes = data.rows;
         const templateVars = { dishes, cartItems: []}
         if (req.session.cartItems) {
@@ -22,7 +20,6 @@ module.exports = (db) => {
         return res.render("menu.ejs", templateVars);
       })
       .catch((err) => {
-        console.log("IT HIT ERROR!!!")
         res.status(500).json({ error: err.message });
       });
   });

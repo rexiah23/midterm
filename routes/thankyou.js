@@ -29,8 +29,6 @@ module.exports = (db) => {
       }
     }
     const { phone_number, email, name } = req.session.contactInfo;
-
-    console.log('DISHES IS: ', dishes, "contact info: ", req.session.contactInfo);
     placeOrder(dishes, phone_number, name, email).then(() => {
       req.session.orderConfirmed = [];
       for (let i = 0; i < cartItems.quantity.length; i++) {
@@ -42,7 +40,6 @@ module.exports = (db) => {
         }
         db.query(`SELECT id FROM dishes WHERE name = $1`, [dishName])
           .then((item) => {
-            console.log('ITEMS:', item.rows);
             const orderConfirmation = {
               name,
               dish_id: item.rows[0].id,
@@ -56,43 +53,6 @@ module.exports = (db) => {
       res.redirect("/thankyou");
     });
   });
-
-  // router.post("/", (req, res) => {
-  //   const cartItems = req.session.cartItems;
-  //   const dishes = [];
-  //   const { quantity, dish_id } = cartItems;
-  //   for (let i = 0; i < quantity.length; i++) {
-  //     const q = quantity[i];
-  //     if (q !== "" && q !== "0") {
-  //       dishes.push({
-  //         dishId: dish_id[i],
-  //         quantity: quantity[i],
-  //       });
-  //     }
-  //   }
-  //   const { phone_number, email, name } = req.session.contactInfo;
-
-  //   console.log('DISHES IS: ', dishes, "contact info: ", req.session.contactInfo);
-  //   placeOrder(dishes, phone_number, name, email).then(() => {
-  //     req.session.orderConfirmed = [];
-  //     for (let i = 0; i < cartItems.quantity.length; i++) {
-  //       const quantity = parseInt(cartItems.quantity[i]);
-  //       const dishName = cartItems.dish_name[i];
-  //       db.query(`SELECT id FROM dishes WHERE name = $1`, [dishName])
-  //         .then((item) => {
-  //           const orderConfirmation = {
-  //             name,
-  //             dish_id: item.rows[0].id,
-  //             quantity,
-  //             phone_number,
-  //             email,
-  //           };
-  //           req.session.orderConfirmed.push(orderConfirmation);
-  //         })
-  //     }
-  //     res.redirect("/thankyou");
-  //   });
-  // });
 
   return router;
 };
